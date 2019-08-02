@@ -35,7 +35,7 @@ defaultAntd = defaultAntd.default || defaultAntd;
 const localeInfo = {
   'en-US': {
     messages: {
-      ...((locale) => locale.__esModule ? locale.default : locale)(require('/Users/icourt/Documents/project/fake_registration_recognition_app/src/locales/en-US.ts')),
+      ...((locale) => locale.__esModule ? locale.default : locale)(require('/Users/icourt/Documents/project/fuko/fake_meid_recognition_app/src/locales/en-US.ts')),
     },
     locale: 'en-US',
     antd: require('antd/lib/locale-provider/en_US'),
@@ -44,7 +44,7 @@ const localeInfo = {
   },
   'pt-BR': {
     messages: {
-      ...((locale) => locale.__esModule ? locale.default : locale)(require('/Users/icourt/Documents/project/fake_registration_recognition_app/src/locales/pt-BR.ts')),
+      ...((locale) => locale.__esModule ? locale.default : locale)(require('/Users/icourt/Documents/project/fuko/fake_meid_recognition_app/src/locales/pt-BR.ts')),
     },
     locale: 'pt-BR',
     antd: require('antd/lib/locale-provider/pt_BR'),
@@ -53,7 +53,7 @@ const localeInfo = {
   },
   'zh-CN': {
     messages: {
-      ...((locale) => locale.__esModule ? locale.default : locale)(require('/Users/icourt/Documents/project/fake_registration_recognition_app/src/locales/zh-CN.ts')),
+      ...((locale) => locale.__esModule ? locale.default : locale)(require('/Users/icourt/Documents/project/fuko/fake_meid_recognition_app/src/locales/zh-CN.ts')),
     },
     locale: 'zh-CN',
     antd: require('antd/lib/locale-provider/zh_CN'),
@@ -62,7 +62,7 @@ const localeInfo = {
   },
   'zh-TW': {
     messages: {
-      ...((locale) => locale.__esModule ? locale.default : locale)(require('/Users/icourt/Documents/project/fake_registration_recognition_app/src/locales/zh-TW.ts')),
+      ...((locale) => locale.__esModule ? locale.default : locale)(require('/Users/icourt/Documents/project/fuko/fake_meid_recognition_app/src/locales/zh-TW.ts')),
     },
     locale: 'zh-TW',
     antd: require('antd/lib/locale-provider/zh_TW'),

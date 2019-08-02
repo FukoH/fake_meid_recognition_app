@@ -3,7 +3,7 @@ import history from './history';
 import '../../global.tsx';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import findRoute from '/Users/icourt/Documents/project/fake_registration_recognition_app/node_modules/umi-build-dev/lib/findRoute.js';
+import findRoute from '/Users/icourt/Documents/project/fuko/fake_meid_recognition_app/node_modules/umi-build-dev/lib/findRoute.js';
 
 // runtime plugins
 const plugins = require('umi/_runtimePlugin');

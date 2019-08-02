@@ -2,13 +2,16 @@ export default [
   {
     path: '/login',
     component: '../layouts/UserLayout',
-    routes: [{
-      path: '/login',
-      redirect: '/login/password'
-    },{
-      path: '/login/password',
-      component: '../layouts/LoginLayout',
-    }],
+    routes: [
+      {
+        path: '/login',
+        redirect: '/login/password',
+      },
+      {
+        path: '/login/password',
+        component: '../layouts/LoginLayout',
+      },
+    ],
   },
   {
     path: '/',

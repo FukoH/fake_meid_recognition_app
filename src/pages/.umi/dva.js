@@ -20,10 +20,12 @@ export function _onCreate() {
     app.use(plugin);
   });
   
-  app.model({ namespace: 'global', ...(require('/Users/icourt/Documents/project/fake_registration_recognition_app/src/models/global.ts').default) });
-app.model({ namespace: 'login', ...(require('/Users/icourt/Documents/project/fake_registration_recognition_app/src/models/login.ts').default) });
-app.model({ namespace: 'setting', ...(require('/Users/icourt/Documents/project/fake_registration_recognition_app/src/models/setting.ts').default) });
-app.model({ namespace: 'user', ...(require('/Users/icourt/Documents/project/fake_registration_recognition_app/src/models/user.ts').default) });
+  app.model({ namespace: 'global', ...(require('/Users/icourt/Documents/project/fuko/fake_meid_recognition_app/src/models/global.ts').default) });
+app.model({ namespace: 'login', ...(require('/Users/icourt/Documents/project/fuko/fake_meid_recognition_app/src/models/login.ts').default) });
+app.model({ namespace: 'proof', ...(require('/Users/icourt/Documents/project/fuko/fake_meid_recognition_app/src/models/proof.ts').default) });
+app.model({ namespace: 'recognition', ...(require('/Users/icourt/Documents/project/fuko/fake_meid_recognition_app/src/models/recognition.ts').default) });
+app.model({ namespace: 'setting', ...(require('/Users/icourt/Documents/project/fuko/fake_meid_recognition_app/src/models/setting.ts').default) });
+app.model({ namespace: 'user', ...(require('/Users/icourt/Documents/project/fuko/fake_meid_recognition_app/src/models/user.ts').default) });
   return app;
 }
 

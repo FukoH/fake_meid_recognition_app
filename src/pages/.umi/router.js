@@ -3,7 +3,7 @@ import { Router as DefaultRouter, Route, Switch } from 'react-router-dom';
 import dynamic from 'umi/dynamic';
 import renderRoutes from 'umi/lib/renderRoutes';
 import history from '@tmp/history';
-import RendererWrapper0 from '/Users/icourt/Documents/project/fake_registration_recognition_app/src/pages/.umi/LocaleWrapper.jsx';
+import RendererWrapper0 from '/Users/icourt/Documents/project/fuko/fake_meid_recognition_app/src/pages/.umi/LocaleWrapper.jsx';
 import _dvaDynamic from 'dva/dynamic';
 
 const Router = require('dva/router').routerRedux.ConnectedRouter;
@@ -15,7 +15,7 @@ const routes = [
       ? _dvaDynamic({
           component: () =>
             import(/* webpackChunkName: "layouts__UserLayout" */ '../../layouts/UserLayout'),
-          LoadingComponent: require('/Users/icourt/Documents/project/fake_registration_recognition_app/src/components/PageLoading/index')
+          LoadingComponent: require('/Users/icourt/Documents/project/fuko/fake_meid_recognition_app/src/components/PageLoading/index')
             .default,
         })
       : require('../../layouts/UserLayout').default,
@@ -31,7 +31,7 @@ const routes = [
           ? _dvaDynamic({
               component: () =>
                 import(/* webpackChunkName: "layouts__LoginLayout" */ '../../layouts/LoginLayout'),
-              LoadingComponent: require('/Users/icourt/Documents/project/fake_registration_recognition_app/src/components/PageLoading/index')
+              LoadingComponent: require('/Users/icourt/Documents/project/fuko/fake_meid_recognition_app/src/components/PageLoading/index')
                 .default,
             })
           : require('../../layouts/LoginLayout').default,
@@ -40,7 +40,7 @@ const routes = [
       {
         component: () =>
           React.createElement(
-            require('/Users/icourt/Documents/project/fake_registration_recognition_app/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
+            require('/Users/icourt/Documents/project/fuko/fake_meid_recognition_app/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
               .default,
             { pagesPath: 'src/pages', hasRoutesInConfig: true },
           ),
@@ -53,7 +53,7 @@ const routes = [
       ? _dvaDynamic({
           component: () =>
             import(/* webpackChunkName: "layouts__BasicLayout" */ '../../layouts/BasicLayout'),
-          LoadingComponent: require('/Users/icourt/Documents/project/fake_registration_recognition_app/src/components/PageLoading/index')
+          LoadingComponent: require('/Users/icourt/Documents/project/fuko/fake_meid_recognition_app/src/components/PageLoading/index')
             .default,
         })
       : require('../../layouts/BasicLayout').default,
@@ -77,7 +77,7 @@ const routes = [
               ? _dvaDynamic({
                   component: () =>
                     import(/* webpackChunkName: "p__dashboard__analysis__Index" */ '../dashboard/analysis/Index'),
-                  LoadingComponent: require('/Users/icourt/Documents/project/fake_registration_recognition_app/src/components/PageLoading/index')
+                  LoadingComponent: require('/Users/icourt/Documents/project/fuko/fake_meid_recognition_app/src/components/PageLoading/index')
                     .default,
                 })
               : require('../dashboard/analysis/Index').default,
@@ -90,7 +90,7 @@ const routes = [
               ? _dvaDynamic({
                   component: () =>
                     import(/* webpackChunkName: "p__dashboard__list__Index" */ '../dashboard/list/Index'),
-                  LoadingComponent: require('/Users/icourt/Documents/project/fake_registration_recognition_app/src/components/PageLoading/index')
+                  LoadingComponent: require('/Users/icourt/Documents/project/fuko/fake_meid_recognition_app/src/components/PageLoading/index')
                     .default,
                 })
               : require('../dashboard/list/Index').default,
@@ -99,7 +99,7 @@ const routes = [
           {
             component: () =>
               React.createElement(
-                require('/Users/icourt/Documents/project/fake_registration_recognition_app/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
+                require('/Users/icourt/Documents/project/fuko/fake_meid_recognition_app/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
                   .default,
                 { pagesPath: 'src/pages', hasRoutesInConfig: true },
               ),
@@ -118,7 +118,7 @@ const routes = [
               ? _dvaDynamic({
                   component: () =>
                     import(/* webpackChunkName: "p__management__proof__Index" */ '../management/proof/Index'),
-                  LoadingComponent: require('/Users/icourt/Documents/project/fake_registration_recognition_app/src/components/PageLoading/index')
+                  LoadingComponent: require('/Users/icourt/Documents/project/fuko/fake_meid_recognition_app/src/components/PageLoading/index')
                     .default,
                 })
               : require('../management/proof/Index').default,
@@ -131,7 +131,7 @@ const routes = [
               ? _dvaDynamic({
                   component: () =>
                     import(/* webpackChunkName: "p__management__account__Index" */ '../management/account/Index'),
-                  LoadingComponent: require('/Users/icourt/Documents/project/fake_registration_recognition_app/src/components/PageLoading/index')
+                  LoadingComponent: require('/Users/icourt/Documents/project/fuko/fake_meid_recognition_app/src/components/PageLoading/index')
                     .default,
                 })
               : require('../management/account/Index').default,
@@ -140,7 +140,7 @@ const routes = [
           {
             component: () =>
               React.createElement(
-                require('/Users/icourt/Documents/project/fake_registration_recognition_app/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
+                require('/Users/icourt/Documents/project/fuko/fake_meid_recognition_app/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
                   .default,
                 { pagesPath: 'src/pages', hasRoutesInConfig: true },
               ),
@@ -159,7 +159,7 @@ const routes = [
               ? _dvaDynamic({
                   component: () =>
                     import(/* webpackChunkName: "p__setting__platform__Index" */ '../setting/platform/Index'),
-                  LoadingComponent: require('/Users/icourt/Documents/project/fake_registration_recognition_app/src/components/PageLoading/index')
+                  LoadingComponent: require('/Users/icourt/Documents/project/fuko/fake_meid_recognition_app/src/components/PageLoading/index')
                     .default,
                 })
               : require('../setting/platform/Index').default,
@@ -168,7 +168,7 @@ const routes = [
           {
             component: () =>
               React.createElement(
-                require('/Users/icourt/Documents/project/fake_registration_recognition_app/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
+                require('/Users/icourt/Documents/project/fuko/fake_meid_recognition_app/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
                   .default,
                 { pagesPath: 'src/pages', hasRoutesInConfig: true },
               ),
@@ -180,7 +180,7 @@ const routes = [
           ? _dvaDynamic({
               component: () =>
                 import(/* webpackChunkName: "p__404" */ '../404'),
-              LoadingComponent: require('/Users/icourt/Documents/project/fake_registration_recognition_app/src/components/PageLoading/index')
+              LoadingComponent: require('/Users/icourt/Documents/project/fuko/fake_meid_recognition_app/src/components/PageLoading/index')
                 .default,
             })
           : require('../404').default,
@@ -189,7 +189,7 @@ const routes = [
       {
         component: () =>
           React.createElement(
-            require('/Users/icourt/Documents/project/fake_registration_recognition_app/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
+            require('/Users/icourt/Documents/project/fuko/fake_meid_recognition_app/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
               .default,
             { pagesPath: 'src/pages', hasRoutesInConfig: true },
           ),
@@ -200,7 +200,7 @@ const routes = [
     component: __IS_BROWSER
       ? _dvaDynamic({
           component: () => import(/* webpackChunkName: "p__404" */ '../404'),
-          LoadingComponent: require('/Users/icourt/Documents/project/fake_registration_recognition_app/src/components/PageLoading/index')
+          LoadingComponent: require('/Users/icourt/Documents/project/fuko/fake_meid_recognition_app/src/components/PageLoading/index')
             .default,
         })
       : require('../404').default,
@@ -209,7 +209,7 @@ const routes = [
   {
     component: () =>
       React.createElement(
-        require('/Users/icourt/Documents/project/fake_registration_recognition_app/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
+        require('/Users/icourt/Documents/project/fuko/fake_meid_recognition_app/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
           .default,
         { pagesPath: 'src/pages', hasRoutesInConfig: true },
       ),
