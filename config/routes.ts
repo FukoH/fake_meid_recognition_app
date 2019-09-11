@@ -5,13 +5,13 @@ export default [
     routes: [
       {
         path: '/login',
-        redirect: '/login/password',
+        redirect: '/login/password'
       },
       {
         path: '/login/password',
-        component: '../layouts/LoginLayout',
-      },
-    ],
+        component: '../layouts/LoginLayout'
+      }
+    ]
   },
   {
     path: '/',
@@ -21,7 +21,7 @@ export default [
     routes: [
       {
         path: '/',
-        redirect: '/dashboard/analysis',
+        redirect: '/dashboard/analysis'
       },
       {
         path: '/dashboard',
@@ -31,14 +31,14 @@ export default [
           {
             path: '/dashboard/analysis',
             name: 'analysis',
-            component: './dashboard/analysis/Index',
+            component: './dashboard/analysis/Index'
           },
           {
             path: '/dashboard/list',
             name: 'list',
-            component: './dashboard/list/Index',
-          },
-        ],
+            component: './dashboard/list/Index'
+          }
+        ]
       },
       {
         path: '/management',
@@ -46,16 +46,16 @@ export default [
         icon: 'database',
         routes: [
           {
-            path: '/management/proof',
-            name: 'proof',
-            component: './management/proof/Index',
+            path: '/management/credential',
+            name: 'credential',
+            component: './management/credential/Index'
           },
           {
             path: '/management/account',
             name: 'account',
-            component: './management/account/Index',
-          },
-        ],
+            component: './management/account/Index'
+          }
+        ]
       },
       {
         path: '/setting',
@@ -65,16 +65,16 @@ export default [
           {
             path: '/setting/platform',
             name: 'platform',
-            component: './setting/platform/Index',
-          },
-        ],
+            component: './setting/platform/Index'
+          }
+        ]
       },
       {
-        component: './404',
-      },
-    ],
+        component: './404'
+      }
+    ]
   },
   {
-    component: './404',
-  },
+    component: './404'
+  }
 ];

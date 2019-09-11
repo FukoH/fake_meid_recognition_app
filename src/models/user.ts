@@ -1,31 +1,26 @@
 import { Effect } from 'dva';
 import { Reducer } from 'redux';
 
-import { queryCurrent, query as queryUsers } from '@/services/user';
+import { query } from '@/services/user';
 
-export interface CurrentUser {
-  avatar?: string;
+export interface User {
+  account?: string;
+  password?: string;
   name?: string;
-  title?: string;
-  group?: string;
-  signature?: string;
-  tags?: {
-    key: string;
-    label: string;
-  }[];
-  unreadCount?: number;
+  role?: string;
+  phone?: string;
+  organizationId?: string;
 }
 
 export interface UserModelState {
-  currentUser?: CurrentUser;
+  user?: User;
 }
 
-export interface UserModelType {
+export interface UserModel {
   namespace: 'user';
   state: UserModelState;
   effects: {
     fetch: Effect;
-    fetchCurrent: Effect;
   };
   reducers: {
     saveCurrentUser: Reducer<UserModelState>;
@@ -33,53 +28,46 @@ export interface UserModelType {
   };
 }
 
-const UserModel: UserModelType = {
+const UserModel: UserModel = {
   namespace: 'user',
 
   state: {
-    currentUser: {},
+    user: {}
   },
 
   effects: {
     *fetch(_, { call, put }) {
-      const response = yield call(queryUsers);
+      const response = yield call(query);
       yield put({
         type: 'save',
-        payload: response,
+        payload: response
       });
-    },
-    *fetchCurrent(_, { call, put }) {
-      const response = yield call(queryCurrent);
-      yield put({
-        type: 'saveCurrentUser',
-        payload: response,
-      });
-    },
+    }
   },
 
   reducers: {
     saveCurrentUser(state, action) {
       return {
         ...state,
-        currentUser: action.payload || {},
+        user: action.payload || {}
       };
     },
     changeNotifyCount(
       state = {
-        currentUser: {},
+        user: {}
       },
-      action,
+      action
     ) {
       return {
         ...state,
         currentUser: {
-          ...state.currentUser,
+          ...state.user,
           notifyCount: action.payload.totalCount,
-          unreadCount: action.payload.unreadCount,
-        },
+          unreadCount: action.payload.unreadCount
+        }
       };
-    },
-  },
+    }
+  }
 };
 
 export default UserModel;

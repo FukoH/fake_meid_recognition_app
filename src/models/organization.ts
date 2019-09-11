@@ -1,17 +1,26 @@
 import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
-import { query } from '@/services/recognition';
+import { query } from '@/services/organization';
 import { ListItem } from './common';
 
-export interface Item {
-  identity_no: string;
-  disabled?: boolean;
+export interface Organization {
+  id: string;
+  name: string;
+  collaborateTerm: string;
+  contactor: string;
+  phone: string;
+  province: string;
+  city: string;
+  collaborateStart: string;
+  collaborateEnd: string;
 }
 
-export interface QueryParams {}
+export interface QueryParams {
+  name: string;
+}
 
 export interface StateType {
-  data: ListItem<Item>;
+  data: ListItem<Organization>;
 }
 
 export type Effect = (
@@ -33,7 +42,7 @@ export interface ModelType {
 }
 
 const Model: ModelType = {
-  namespace: 'recognition',
+  namespace: 'organization',
 
   state: {
     data: {

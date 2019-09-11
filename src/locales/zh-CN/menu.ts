@@ -50,8 +50,8 @@ export default {
   'menu.dashboard.analysis': '串码统计',
   'menu.dashboard.list': '串码查询',
   'menu.management': '管理',
-  'menu.management.proof': '凭证管理',
+  'menu.management.credential': '凭证管理',
   'menu.management.account': '账号管理',
   'menu.setting': '设置',
-  'menu.setting.platform': '平台信息',
+  'menu.setting.platform': '平台信息'
 };

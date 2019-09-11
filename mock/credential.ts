@@ -1,9 +1,9 @@
 // import { Request, Response } from 'express';
 // import { parse } from 'url';
-// import { TableListItem, TableListParams } from '@/models/recognition.d';
+// import { Item, QueryParams } from '@/models/credential';
 
 // // mock tableListDataSource
-// let tableListDataSource: TableListItem[] = [];
+// let tableListDataSource: Item[] = [];
 
 // for (let i = 0; i < 8; i += 1) {
 //   tableListDataSource.push({
@@ -12,7 +12,7 @@
 //     href: 'https://ant.design',
 //     avatar: [
 //       'https://gw.alipayobjects.com/zos/rmsportal/eeHMaZBwmTvLdIwMfBpg.png',
-//       'https://gw.alipayobjects.com/zos/rmsportal/udxAbMEhpwthVVcjLXik.png',
+//       'https://gw.alipayobjects.com/zos/rmsportal/udxAbMEhpwthVVcjLXik.png'
 //     ][i % 2],
 //     name: `TradeCode ${i}`,
 //     title: `一个任务名称 ${i}`,
@@ -22,7 +22,7 @@
 //     status: Math.floor(Math.random() * 10) % 4,
 //     updatedAt: new Date(`2017-07-${Math.floor(i / 2) + 1}`),
 //     createdAt: new Date(`2017-07-${Math.floor(i / 2) + 1}`),
-//     progress: Math.ceil(Math.random() * 100),
+//     progress: Math.ceil(Math.random() * 100)
 //   });
 // }
 
@@ -33,7 +33,7 @@
 //     url = req.url;
 //   }
 
-//   const params = (parse(url, true).query as unknown) as TableListParams;
+//   const params = (parse(url, true).query as unknown) as QueryParams;
 
 //   let dataSource = tableListDataSource;
 
@@ -49,7 +49,7 @@
 
 //   if (params.status) {
 //     const status = params.status.split(',');
-//     let filterDataSource: TableListItem[] = [];
+//     let filterDataSource: Item[] = [];
 //     status.forEach((s: string) => {
 //       filterDataSource = filterDataSource.concat(
 //         dataSource.filter(item => {
@@ -57,7 +57,7 @@
 //             return true;
 //           }
 //           return false;
-//         }),
+//         })
 //       );
 //     });
 //     dataSource = filterDataSource;
@@ -77,8 +77,8 @@
 //     pagination: {
 //       total: dataSource.length,
 //       pageSize,
-//       current: parseInt(`${params.currentPage}`, 10) || 1,
-//     },
+//       current: parseInt(`${params.currentPage}`, 10) || 1
+//     }
 //   };
 
 //   return res.json(result);
@@ -97,7 +97,9 @@
 //   switch (method) {
 //     /* eslint no-case-declarations:0 */
 //     case 'delete':
-//       tableListDataSource = tableListDataSource.filter(item => key.indexOf(item.key) === -1);
+//       tableListDataSource = tableListDataSource.filter(
+//         item => key.indexOf(item.key) === -1
+//       );
 //       break;
 //     case 'post':
 //       const i = Math.ceil(Math.random() * 10000);
@@ -106,7 +108,7 @@
 //         href: 'https://ant.design',
 //         avatar: [
 //           'https://gw.alipayobjects.com/zos/rmsportal/eeHMaZBwmTvLdIwMfBpg.png',
-//           'https://gw.alipayobjects.com/zos/rmsportal/udxAbMEhpwthVVcjLXik.png',
+//           'https://gw.alipayobjects.com/zos/rmsportal/udxAbMEhpwthVVcjLXik.png'
 //         ][i % 2],
 //         name: `TradeCode ${i}`,
 //         title: `一个任务名称 ${i}`,
@@ -116,7 +118,7 @@
 //         status: Math.floor(Math.random() * 10) % 2,
 //         updatedAt: new Date(),
 //         createdAt: new Date(),
-//         progress: Math.ceil(Math.random() * 100),
+//         progress: Math.ceil(Math.random() * 100)
 //       });
 //       break;
 //     case 'update':
@@ -134,8 +136,8 @@
 //   const result = {
 //     list: tableListDataSource,
 //     pagination: {
-//       total: tableListDataSource.length,
-//     },
+//       total: tableListDataSource.length
+//     }
 //   };
 
 //   return res.json(result);
@@ -143,5 +145,5 @@
 
 // export default {
 //   'GET /api/rule': getRule,
-//   'POST /api/rule': postRule,
+//   'POST /api/rule': postRule
 // };

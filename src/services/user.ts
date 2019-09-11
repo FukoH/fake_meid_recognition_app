@@ -1,13 +1,30 @@
 import request from '@/utils/request';
+import { User } from '../models/user';
 
 export async function query(): Promise<any> {
-  return request('/api/users');
+  return request('/api/user');
 }
 
-export async function queryCurrent(): Promise<any> {
-  return request('/api/currentUser');
+export async function find(id: string): Promise<any> {
+  return request(`/api/user/${id}`);
 }
 
-export async function queryNotices(): Promise<any> {
-  return request('/api/notices');
+export async function add(data: User): Promise<any> {
+  return request('/api/user', {
+    method: 'POST',
+    data
+  });
+}
+
+export async function update(data: User): Promise<any> {
+  return request('/api/user', {
+    method: 'PUT',
+    data
+  });
+}
+
+export async function remove(id: string): Promise<any> {
+  return request(`/api/user/${id}`, {
+    method: 'DELETE'
+  });
 }
