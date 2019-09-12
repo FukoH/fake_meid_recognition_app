@@ -1,22 +1,24 @@
 import request from '@/utils/request';
-import { User } from '../models/user';
+import { Item } from '../models/user';
+import { QueryParams } from '@/models/user';
+import { toQueryString } from '@/utils/utils'
 
-export async function query(): Promise<any> {
-  return request('/api/user');
+export async function query(params: QueryParams): Promise<any> {
+  return request(`/api/user${toQueryString(params)}`);
 }
 
 export async function find(id: string): Promise<any> {
   return request(`/api/user/${id}`);
 }
 
-export async function add(data: User): Promise<any> {
+export async function add(data: Item): Promise<any> {
   return request('/api/user', {
     method: 'POST',
     data
   });
 }
 
-export async function update(data: User): Promise<any> {
+export async function update(data: Item): Promise<any> {
   return request('/api/user', {
     method: 'PUT',
     data

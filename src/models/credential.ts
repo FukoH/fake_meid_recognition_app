@@ -30,6 +30,8 @@ export interface ListData {
 export interface QueryParams {
   organization_id: string; // 组织id
   status: string; // 状态
+  currentPage: number,
+  pageSize: number,
 }
 
 export type Effect = (

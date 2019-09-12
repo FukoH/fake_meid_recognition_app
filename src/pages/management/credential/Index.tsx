@@ -3,13 +3,11 @@ import {
   Button,
   Card,
   Col,
-  DatePicker,
   Divider,
   Dropdown,
   Form,
   Icon,
   Input,
-  InputNumber,
   Menu,
   Row,
   Select,
@@ -51,9 +49,8 @@ interface TableListProps extends FormComponentProps {
 }
 
 interface TableListState {
-  modalVisible: boolean;
-  updateModalVisible: boolean;
-  expandForm: boolean;
+  addVisible: boolean;
+  updateVisible: boolean;
   selectedRows: Item[];
   formValues: { [key: string]: string };
   stepFormValues: Partial<Item>;
@@ -78,9 +75,8 @@ interface TableListState {
 )
 class TableList extends Component<TableListProps, TableListState> {
   state: TableListState = {
-    modalVisible: false,
-    updateModalVisible: false,
-    expandForm: false,
+    addVisible: false,
+    updateVisible: false,
     selectedRows: [],
     formValues: {},
     stepFormValues: {}
@@ -88,21 +84,20 @@ class TableList extends Component<TableListProps, TableListState> {
 
   columns: StandardTableColumnProps[] = [
     {
-      title: '规则名称',
-      dataIndex: 'name'
+      title: '凭证号',
+      dataIndex: 'id'
     },
     {
-      title: '描述',
-      dataIndex: 'desc'
+      title: '代理商',
+      dataIndex: 'organization'
     },
     {
-      title: '服务调用次数',
-      dataIndex: 'callNo',
+      title: '金额',
+      dataIndex: 'money',
       sorter: true,
-      align: 'right',
-      render: (val: string) => `${val} 万`,
-      // mark to display a total number
-      needTotal: true
+      render: (val: string) => (
+        <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>
+      )
     },
     {
       title: '状态',
@@ -130,18 +125,10 @@ class TableList extends Component<TableListProps, TableListState> {
       }
     },
     {
-      title: '上次调度时间',
-      dataIndex: 'updatedAt',
-      sorter: true,
-      render: (val: string) => (
-        <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>
-      )
-    },
-    {
       title: '操作',
       render: (text, record) => (
         <Fragment>
-          <a onClick={() => this.handleUpdateModalVisible(true, record)}>
+          <a onClick={() => this.handleUpdateVisible(true, record)}>
             配置
           </a>
           <Divider type='vertical' />
@@ -200,13 +187,6 @@ class TableList extends Component<TableListProps, TableListState> {
     });
   };
 
-  toggleForm = () => {
-    const { expandForm } = this.state;
-    this.setState({
-      expandForm: !expandForm
-    });
-  };
-
   handleMenuClick = (e: { key: string }) => {
     const { dispatch } = this.props;
     const { selectedRows } = this.state;
@@ -261,15 +241,15 @@ class TableList extends Component<TableListProps, TableListState> {
     });
   };
 
-  handleModalVisible = (flag?: boolean) => {
+  handleAddVisible = (flag?: boolean) => {
     this.setState({
-      modalVisible: !!flag
+      addVisible: !!flag
     });
   };
 
-  handleUpdateModalVisible = (flag?: boolean, record?: FormValsType) => {
+  handleUpdateVisible = (flag?: boolean, record?: FormValsType) => {
     this.setState({
-      updateModalVisible: !!flag,
+      updateVisible: !!flag,
       stepFormValues: record || {}
     });
   };
@@ -284,7 +264,7 @@ class TableList extends Component<TableListProps, TableListState> {
     });
 
     message.success('添加成功');
-    this.handleModalVisible();
+    this.handleAddVisible();
   };
 
   handleUpdate = (fields: FormValsType) => {
@@ -299,7 +279,7 @@ class TableList extends Component<TableListProps, TableListState> {
     });
 
     message.success('配置成功');
-    this.handleUpdateModalVisible();
+    this.handleUpdateVisible();
   };
 
   renderSimpleForm() {
@@ -309,12 +289,12 @@ class TableList extends Component<TableListProps, TableListState> {
       <Form onSubmit={this.handleSearch} layout='inline'>
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
-            <FormItem label='规则名称'>
+            <FormItem label='凭证号码'>
               {getFieldDecorator('name')(<Input placeholder='请输入' />)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
-            <FormItem label='使用状态'>
+            <FormItem label='凭证状态'>
               {getFieldDecorator('status')(
                 <Select placeholder='请选择' style={{ width: '100%' }}>
                   <Option value='0'>关闭</Option>
@@ -331,98 +311,11 @@ class TableList extends Component<TableListProps, TableListState> {
               <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
                 重置
               </Button>
-              <a style={{ marginLeft: 8 }} onClick={this.toggleForm}>
-                展开 <Icon type='down' />
-              </a>
             </span>
           </Col>
         </Row>
       </Form>
     );
-  }
-
-  renderAdvancedForm() {
-    const {
-      form: { getFieldDecorator }
-    } = this.props;
-    return (
-      <Form onSubmit={this.handleSearch} layout='inline'>
-        <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-          <Col md={8} sm={24}>
-            <FormItem label='规则名称'>
-              {getFieldDecorator('name')(<Input placeholder='请输入' />)}
-            </FormItem>
-          </Col>
-          <Col md={8} sm={24}>
-            <FormItem label='使用状态'>
-              {getFieldDecorator('status')(
-                <Select placeholder='请选择' style={{ width: '100%' }}>
-                  <Option value='0'>关闭</Option>
-                  <Option value='1'>运行中</Option>
-                </Select>
-              )}
-            </FormItem>
-          </Col>
-          <Col md={8} sm={24}>
-            <FormItem label='调用次数'>
-              {getFieldDecorator('number')(
-                <InputNumber style={{ width: '100%' }} />
-              )}
-            </FormItem>
-          </Col>
-        </Row>
-        <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-          <Col md={8} sm={24}>
-            <FormItem label='更新日期'>
-              {getFieldDecorator('date')(
-                <DatePicker
-                  style={{ width: '100%' }}
-                  placeholder='请输入更新日期'
-                />
-              )}
-            </FormItem>
-          </Col>
-          <Col md={8} sm={24}>
-            <FormItem label='使用状态'>
-              {getFieldDecorator('status3')(
-                <Select placeholder='请选择' style={{ width: '100%' }}>
-                  <Option value='0'>关闭</Option>
-                  <Option value='1'>运行中</Option>
-                </Select>
-              )}
-            </FormItem>
-          </Col>
-          <Col md={8} sm={24}>
-            <FormItem label='使用状态'>
-              {getFieldDecorator('status4')(
-                <Select placeholder='请选择' style={{ width: '100%' }}>
-                  <Option value='0'>关闭</Option>
-                  <Option value='1'>运行中</Option>
-                </Select>
-              )}
-            </FormItem>
-          </Col>
-        </Row>
-        <div style={{ overflow: 'hidden' }}>
-          <div style={{ float: 'right', marginBottom: 24 }}>
-            <Button type='primary' htmlType='submit'>
-              查询
-            </Button>
-            <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
-              重置
-            </Button>
-            <a style={{ marginLeft: 8 }} onClick={this.toggleForm}>
-              收起 <Icon type='up' />
-            </a>
-          </div>
-        </div>
-      </Form>
-    );
-  }
-
-  renderForm() {
-    const { expandForm } = this.state;
-    return expandForm ? this.renderAdvancedForm() : this.renderSimpleForm();
   }
 
   render() {
@@ -433,8 +326,8 @@ class TableList extends Component<TableListProps, TableListState> {
 
     const {
       selectedRows,
-      modalVisible,
-      updateModalVisible,
+      addVisible,
+      updateVisible,
       stepFormValues
     } = this.state;
     const menu = (
@@ -446,22 +339,22 @@ class TableList extends Component<TableListProps, TableListState> {
 
     const parentMethods = {
       handleAdd: this.handleAdd,
-      handleModalVisible: this.handleModalVisible
+      handleAddVisible: this.handleAddVisible
     };
     const updateMethods = {
-      handleUpdateModalVisible: this.handleUpdateModalVisible,
+      handleUpdateVisible: this.handleUpdateVisible,
       handleUpdate: this.handleUpdate
     };
     return (
       <PageHeaderWrapper>
         <Card bordered={false}>
           <div className={styles.tableList}>
-            <div className={styles.tableListForm}>{this.renderForm()}</div>
+            <div className={styles.tableListForm}>{this.renderSimpleForm()}</div>
             <div className={styles.tableListOperator}>
               <Button
                 icon='plus'
                 type='primary'
-                onClick={() => this.handleModalVisible(true)}
+                onClick={() => this.handleAddVisible(true)}
               >
                 新建
               </Button>
@@ -486,11 +379,11 @@ class TableList extends Component<TableListProps, TableListState> {
             />
           </div>
         </Card>
-        <CreateForm {...parentMethods} modalVisible={modalVisible} />
+        <CreateForm {...parentMethods} addVisible={addVisible} />
         {stepFormValues && Object.keys(stepFormValues).length ? (
           <UpdateForm
             {...updateMethods}
-            updateModalVisible={updateModalVisible}
+            updateVisible={updateVisible}
             values={stepFormValues}
           />
         ) : null}

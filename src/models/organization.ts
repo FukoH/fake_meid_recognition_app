@@ -16,7 +16,7 @@ export interface Organization {
 }
 
 export interface QueryParams {
-  name: string;
+  name?: string;
 }
 
 export interface StateType {

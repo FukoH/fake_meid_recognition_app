@@ -19,4 +19,17 @@ const isAntDesignProOrDev = (): boolean => {
   return isAntDesignPro();
 };
 
-export { isAntDesignProOrDev, isAntDesignPro, isUrl };
+const toQueryString = (obj: any): string => {
+  let strArr = [];
+  for(let key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      strArr.push(`${key}=${obj[key]}`);
+    }
+  }
+  if (strArr.length > 0) {
+    return `?${strArr.join('&')}`; 
+  }
+  return '';
+}
+
+export { isAntDesignProOrDev, isAntDesignPro, isUrl, toQueryString };
