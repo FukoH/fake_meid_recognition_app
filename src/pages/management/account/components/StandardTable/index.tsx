@@ -1,17 +1,17 @@
-import { Alert, Table } from 'antd';
-import { ColumnProps, TableRowSelection, TableProps } from 'antd/es/table';
-import React, { Component, Fragment } from 'react';
+import { Alert, Table } from "antd";
+import { ColumnProps, TableRowSelection, TableProps } from "antd/es/table";
+import React, { Component, Fragment } from "react";
 
-import { Item } from '@/models/user';
-import styles from './index.less';
+import { Item } from "@/models/user";
+import styles from "./index.less";
 
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
-export interface StandardTableProps<T> extends Omit<TableProps<T>, 'columns'> {
+export interface StandardTableProps<T> extends Omit<TableProps<T>, "columns"> {
   columns: StandardTableColumnProps[];
   data: {
     list: Item[];
-    pagination: StandardTableProps<Item>['pagination'];
+    pagination: StandardTableProps<Item>["pagination"];
   };
   selectedRows: Item[];
   onSelectRow: (rows: any) => void;
@@ -67,7 +67,7 @@ class StandardTable extends Component<
     };
   }
 
-  handleRowSelectChange: TableRowSelection<Item>['onChange'] = (
+  handleRowSelectChange: TableRowSelection<Item>["onChange"] = (
     selectedRowKeys,
     selectedRows: Item[]
   ) => {
@@ -88,7 +88,7 @@ class StandardTable extends Component<
     this.setState({ selectedRowKeys: currySelectedRowKeys, needTotalList });
   };
 
-  handleTableChange: TableProps<Item>['onChange'] = (
+  handleTableChange: TableProps<Item>["onChange"] = (
     pagination,
     filters,
     sorter,
@@ -110,7 +110,6 @@ class StandardTable extends Component<
     const { selectedRowKeys, needTotalList } = this.state;
     const { data, rowKey, ...rest } = this.props;
     const { list = [], pagination = false } = data || {};
-    console.log('data', data, this.props)
     const paginationProps = pagination
       ? {
           showSizeChanger: true,
@@ -133,8 +132,8 @@ class StandardTable extends Component<
           <Alert
             message={
               <Fragment>
-                已选择{' '}
-                <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a>{' '}
+                已选择{" "}
+                <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a>{" "}
                 项&nbsp;&nbsp;
                 {needTotalList.map((item, index) => (
                   <span style={{ marginLeft: 8 }} key={item.dataIndex}>
@@ -152,12 +151,12 @@ class StandardTable extends Component<
                 </a>
               </Fragment>
             }
-            type='info'
+            type="info"
             showIcon
           />
         </div>
         <Table
-          rowKey={rowKey || 'key'}
+          rowKey={rowKey || "key"}
           rowSelection={rowSelection}
           dataSource={list}
           pagination={paginationProps}

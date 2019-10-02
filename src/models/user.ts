@@ -1,12 +1,12 @@
-import { Effect } from 'dva';
-import { Reducer } from 'redux';
+import { Effect } from "dva";
+import { Reducer } from "redux";
 
-import { query } from '@/services/user';
-import { ListItem, Pagination } from '@/models/common.d'
+import { query, batchRemove, add, update, remove, find } from "@/services/user";
+import { ListItem } from "@/models/common.d";
 
 export interface QueryParams {
-  page?: number,
-  pageSize?: number,
+  page?: number;
+  pageSize?: number;
 }
 
 export interface StateType {
@@ -14,13 +14,15 @@ export interface StateType {
 }
 
 export interface Item {
+  id?: string;
   account?: string;
   password?: string;
   name?: string;
   role?: number;
   phone?: string;
   organizationId?: string;
-  disabled?: boolean,
+  organizationName?: string;
+  disabled?: boolean;
 }
 
 export interface UserModelState {
@@ -28,10 +30,15 @@ export interface UserModelState {
 }
 
 export interface UserModel {
-  namespace: 'user';
+  namespace: "user";
   state: UserModelState;
   effects: {
     fetch: Effect;
+    batchRemove: Effect;
+    add: Effect;
+    update: Effect;
+    remove: Effect;
+    find: Effect;
   };
   reducers: {
     save: Reducer<UserModelState>;
@@ -41,7 +48,7 @@ export interface UserModel {
 }
 
 const UserModel: UserModel = {
-  namespace: 'user',
+  namespace: "user",
 
   state: {
     user: {}
@@ -51,9 +58,48 @@ const UserModel: UserModel = {
     *fetch({ payload }, { call, put }) {
       const response = yield call(query, payload);
       yield put({
-        type: 'save',
+        type: "save",
         payload: response || {}
       });
+    },
+    *add({ payload, callback }, { call, put }) {
+      const response = yield call(add, payload);
+      yield put({
+        type: "save",
+        payload: response || {}
+      });
+      if (callback) callback(response);
+    },
+    *update({ payload, callback }, { call, put }) {
+      const response = yield call(update, payload);
+      yield put({
+        type: "save",
+        payload: response || {}
+      });
+      if (callback) callback(response);
+    },
+    *remove({ payload, callback }, { call, put }) {
+      const response = yield call(remove, payload);
+      yield put({
+        type: "save",
+        payload: response || {}
+      });
+      if (callback) callback(response);
+    },
+    *find({ payload, callback }, { call, put }) {
+      const response = yield call(find, payload);
+      yield put({
+        type: "save",
+        payload: response || {}
+      });
+    },
+    *batchRemove({ payload, callback }, { call, put }) {
+      const response = yield call(batchRemove, payload);
+      yield put({
+        type: "save",
+        payload: response || {}
+      });
+      if (callback) callback(response);
     }
   },
 

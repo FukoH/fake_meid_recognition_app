@@ -4,16 +4,16 @@ const reg = /(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(
 const isUrl = (path: string): boolean => reg.test(path);
 
 const isAntDesignPro = (): boolean => {
-  if (ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION === 'site') {
+  if (ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION === "site") {
     return true;
   }
-  return window.location.hostname === 'preview.pro.ant.design';
+  return window.location.hostname === "preview.pro.ant.design";
 };
 
 // 给官方演示站点用，用于关闭真实开发环境不需要使用的特性
 const isAntDesignProOrDev = (): boolean => {
   const { NODE_ENV } = process.env;
-  if (NODE_ENV === 'development') {
+  if (NODE_ENV === "development") {
     return true;
   }
   return isAntDesignPro();
@@ -21,15 +21,16 @@ const isAntDesignProOrDev = (): boolean => {
 
 const toQueryString = (obj: any): string => {
   let strArr = [];
-  for(let key in obj) {
-    if (obj.hasOwnProperty(key)) {
+  for (let key in obj) {
+    // 如果存在某个属性的值且改属性的值部位undefined或者null
+    if (obj.hasOwnProperty(key) && obj[key]) {
       strArr.push(`${key}=${obj[key]}`);
     }
   }
   if (strArr.length > 0) {
-    return `?${strArr.join('&')}`; 
+    return `?${strArr.join("&")}`;
   }
-  return '';
-}
+  return "";
+};
 
 export { isAntDesignProOrDev, isAntDesignPro, isUrl, toQueryString };
