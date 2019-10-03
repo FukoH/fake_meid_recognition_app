@@ -1,7 +1,7 @@
-import request from "@/utils/request";
-import { Item } from "../models/user";
-import { QueryParams } from "@/models/user";
-import { toQueryString } from "@/utils/utils";
+import request from '@/utils/request';
+import { Item } from '../models/user';
+import { QueryParams } from '@/models/user';
+import { toQueryString } from '@/utils/utils';
 
 export async function query(params: QueryParams): Promise<any> {
   return request(`/api/user${toQueryString(params)}`);
@@ -12,28 +12,42 @@ export async function find(id: string): Promise<any> {
 }
 
 export async function add(data: Item): Promise<any> {
-  return request("/api/user", {
-    method: "POST",
+  return request('/api/user', {
+    method: 'POST',
     data
   });
 }
 
 export async function update(data: Item): Promise<any> {
-  return request("/api/user", {
-    method: "PUT",
+  return request('/api/user', {
+    method: 'PUT',
     data
   });
 }
 
 export async function remove(id: string): Promise<any> {
   return request(`/api/user/${id}`, {
-    method: "DELETE"
+    method: 'DELETE'
   });
 }
 
 export async function batchRemove(payload: any): Promise<any> {
   return request(`/api/user/batchDelete`, {
-    method: "PUT",
+    method: 'PUT',
     data: { ids: payload.ids }
+  });
+}
+
+export async function resetPwd(id: any): Promise<any> {
+  return request(`/api/user/resetPwd`, {
+    method: 'PUT',
+    data: { id }
+  });
+}
+
+export async function updatePwd(payload: any): Promise<any> {
+  return request(`/api/user/updatePwd`, {
+    method: 'PUT',
+    data: payload
   });
 }

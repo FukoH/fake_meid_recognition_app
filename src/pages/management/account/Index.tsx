@@ -8,23 +8,23 @@ import {
   Row,
   Select,
   message
-} from "antd";
-import React, { Component, Fragment } from "react";
+} from 'antd';
+import React, { Component, Fragment } from 'react';
 
-import { Dispatch } from "redux";
-import { FormComponentProps } from "antd/es/form";
-import { PageHeaderWrapper } from "@ant-design/pro-layout";
-import { SorterResult } from "antd/es/table";
-import { connect } from "dva";
-import CreateForm from "./components/CreateForm";
+import { Dispatch } from 'redux';
+import { FormComponentProps } from 'antd/es/form';
+import { PageHeaderWrapper } from '@ant-design/pro-layout';
+import { SorterResult } from 'antd/es/table';
+import { connect } from 'dva';
+import CreateForm from './components/CreateForm';
 import StandardTable, {
   StandardTableColumnProps
-} from "./components/StandardTable";
-import UpdateForm, { FormValsType } from "./components/UpdateForm";
-import { Pagination } from "@/models/common";
-import { Item, StateType, QueryParams } from "@/models/user";
-import { ROLES } from "@/constants";
-import styles from "./style.less";
+} from './components/StandardTable';
+import UpdateForm, { FormValsType } from './components/UpdateForm';
+import { Pagination } from '@/models/common';
+import { Item, StateType, QueryParams } from '@/models/user';
+import { ROLES } from '@/constants';
+import styles from './style.less';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -32,7 +32,7 @@ const { Option } = Select;
 const getValue = (obj: { [x: string]: string[] }) =>
   Object.keys(obj)
     .map(key => obj[key])
-    .join(",");
+    .join(',');
 
 interface TableListProps extends FormComponentProps {
   dispatch: Dispatch<any>;
@@ -76,37 +76,37 @@ class TableList extends Component<TableListProps, TableListState> {
 
   columns: StandardTableColumnProps[] = [
     {
-      title: "账号",
-      dataIndex: "account"
+      title: '账号',
+      dataIndex: 'account'
     },
     {
-      title: "用户名",
-      dataIndex: "name"
+      title: '用户名',
+      dataIndex: 'name'
     },
     {
-      title: "电话",
-      dataIndex: "phone"
+      title: '电话',
+      dataIndex: 'phone'
     },
     {
-      title: "组织",
-      dataIndex: "organizationName"
+      title: '组织',
+      dataIndex: 'organizationName'
     },
     {
-      title: "角色",
-      dataIndex: "role",
+      title: '角色',
+      dataIndex: 'role',
       render: (text, record) => {
         let role = ROLES.find(r => String(r.value) === text);
-        return role ? role.label : "";
+        return role ? role.label : '';
       }
     },
     {
-      title: "操作",
+      title: '操作',
       render: (text, record) => (
         <Fragment>
           <a onClick={() => this.handleUpdateVisible(true, record)}>管理</a>
-          <Divider type="vertical" />
-          <a href="">重置密码</a>
-          <Divider type="vertical" />
+          <Divider type='vertical' />
+          <a onClick={() => this.handleResetPwd(record)}>重置密码</a>
+          <Divider type='vertical' />
           <a onClick={() => this.handleRemove(record)}>删除</a>
         </Fragment>
       )
@@ -116,7 +116,7 @@ class TableList extends Component<TableListProps, TableListState> {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: "user/fetch"
+      type: 'user/fetch'
     });
   }
 
@@ -141,7 +141,7 @@ class TableList extends Component<TableListProps, TableListState> {
       ...filters
     };
     dispatch({
-      type: "user/fetch",
+      type: 'user/fetch',
       payload: params
     });
   };
@@ -153,7 +153,7 @@ class TableList extends Component<TableListProps, TableListState> {
       formValues: {}
     });
     dispatch({
-      type: "user/fetch",
+      type: 'user/fetch',
       payload: {}
     });
   };
@@ -162,7 +162,7 @@ class TableList extends Component<TableListProps, TableListState> {
     const { dispatch } = this.props;
     const { selectedRows } = this.state;
     dispatch({
-      type: "user/batchRemove",
+      type: 'user/batchRemove',
       payload: {
         ids: selectedRows.map(row => row.id)
       },
@@ -172,10 +172,10 @@ class TableList extends Component<TableListProps, TableListState> {
             selectedRows: []
           });
           dispatch({
-            type: "user/fetch"
+            type: 'user/fetch'
           });
         } else {
-          message.error("批量删除失败");
+          message.error('批量删除失败');
         }
       }
     });
@@ -183,15 +183,32 @@ class TableList extends Component<TableListProps, TableListState> {
   handleRemove = (record: FormValsType) => {
     const { dispatch } = this.props;
     dispatch({
-      type: "user/remove",
+      type: 'user/remove',
       payload: record.id,
       callback: (res: any) => {
         if (res.success) {
           dispatch({
-            type: "user/fetch"
+            type: 'user/fetch'
           });
         } else {
-          message.error("删除失败");
+          message.error('删除失败');
+        }
+      }
+    });
+  };
+  handleResetPwd = (record: FormValsType) => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'user/resetPwd',
+      payload: record.id,
+      callback: (res: any) => {
+        if (res.success) {
+          dispatch({
+            type: 'user/fetch'
+          });
+          message.success('重置密码成功');
+        } else {
+          message.error('重置密码失败');
         }
       }
     });
@@ -221,7 +238,7 @@ class TableList extends Component<TableListProps, TableListState> {
       });
 
       dispatch({
-        type: "user/fetch",
+        type: 'user/fetch',
         payload: values
       });
     });
@@ -243,15 +260,15 @@ class TableList extends Component<TableListProps, TableListState> {
   handleAdd = (fields: { desc: any }) => {
     const { dispatch } = this.props;
     dispatch({
-      type: "user/add",
+      type: 'user/add',
       payload: fields,
       callback: (res: any) => {
         if (res.success) {
-          message.success("添加成功");
+          message.success('添加成功');
           this.handleAddVisible();
           this.handleFormReset();
         } else {
-          message.error("添加失败");
+          message.error('添加失败');
         }
       }
     });
@@ -260,15 +277,15 @@ class TableList extends Component<TableListProps, TableListState> {
   handleUpdate = (fields: FormValsType) => {
     const { dispatch } = this.props;
     dispatch({
-      type: "user/update",
+      type: 'user/update',
       payload: fields,
       callback: (res: any) => {
         if (res.success) {
-          message.success("修改成功");
+          message.success('修改成功');
           this.handleUpdateVisible();
           this.handleFormReset();
         } else {
-          message.error("修改失败");
+          message.error('修改失败');
         }
       }
     });
@@ -278,24 +295,24 @@ class TableList extends Component<TableListProps, TableListState> {
     const { form } = this.props;
     const { getFieldDecorator } = form;
     return (
-      <Form onSubmit={this.handleSearch} layout="inline">
+      <Form onSubmit={this.handleSearch} layout='inline'>
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
-            <FormItem label="账号">
-              {getFieldDecorator("account")(<Input placeholder="请输入" />)}
+            <FormItem label='账号'>
+              {getFieldDecorator('account')(<Input placeholder='请输入' />)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
-            <FormItem label="名字">
-              {getFieldDecorator("name")(<Input placeholder="请输入" />)}
+            <FormItem label='名字'>
+              {getFieldDecorator('name')(<Input placeholder='请输入' />)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
-            <FormItem label="角色">
-              {getFieldDecorator("role")(
+            <FormItem label='角色'>
+              {getFieldDecorator('role')(
                 <Select
-                  placeholder="请选择"
-                  style={{ width: "100%" }}
+                  placeholder='请选择'
+                  style={{ width: '100%' }}
                   allowClear
                 >
                   {ROLES.map((r: any) => (
@@ -307,7 +324,7 @@ class TableList extends Component<TableListProps, TableListState> {
           </Col>
           <Col md={8} sm={24}>
             <span className={styles.submitButtons}>
-              <Button type="primary" htmlType="submit">
+              <Button type='primary' htmlType='submit'>
                 查询
               </Button>
               <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
@@ -346,8 +363,8 @@ class TableList extends Component<TableListProps, TableListState> {
             </div>
             <div className={styles.tableListOperator}>
               <Button
-                icon="plus"
-                type="primary"
+                icon='plus'
+                type='primary'
                 onClick={() => this.handleAddVisible(true)}
               >
                 新建

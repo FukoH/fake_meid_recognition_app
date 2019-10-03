@@ -1,8 +1,8 @@
-import { Effect } from "dva";
-import { Reducer } from "redux";
+import { Effect } from 'dva';
+import { Reducer } from 'redux';
 
-import { query, batchRemove, add, update, remove, find } from "@/services/user";
-import { ListItem } from "@/models/common.d";
+import { query, batchRemove, add, update, remove, find, resetPwd, updatePwd } from '@/services/user';
+import { ListItem } from '@/models/common.d';
 
 export interface QueryParams {
   page?: number;
@@ -30,7 +30,7 @@ export interface UserModelState {
 }
 
 export interface UserModel {
-  namespace: "user";
+  namespace: 'user';
   state: UserModelState;
   effects: {
     fetch: Effect;
@@ -39,6 +39,8 @@ export interface UserModel {
     update: Effect;
     remove: Effect;
     find: Effect;
+    resetPwd: Effect;
+    updatePwd: Effect;
   };
   reducers: {
     save: Reducer<UserModelState>;
@@ -48,7 +50,7 @@ export interface UserModel {
 }
 
 const UserModel: UserModel = {
-  namespace: "user",
+  namespace: 'user',
 
   state: {
     user: {}
@@ -58,14 +60,14 @@ const UserModel: UserModel = {
     *fetch({ payload }, { call, put }) {
       const response = yield call(query, payload);
       yield put({
-        type: "save",
+        type: 'save',
         payload: response || {}
       });
     },
     *add({ payload, callback }, { call, put }) {
       const response = yield call(add, payload);
       yield put({
-        type: "save",
+        type: 'save',
         payload: response || {}
       });
       if (callback) callback(response);
@@ -73,7 +75,7 @@ const UserModel: UserModel = {
     *update({ payload, callback }, { call, put }) {
       const response = yield call(update, payload);
       yield put({
-        type: "save",
+        type: 'save',
         payload: response || {}
       });
       if (callback) callback(response);
@@ -81,7 +83,7 @@ const UserModel: UserModel = {
     *remove({ payload, callback }, { call, put }) {
       const response = yield call(remove, payload);
       yield put({
-        type: "save",
+        type: 'save',
         payload: response || {}
       });
       if (callback) callback(response);
@@ -89,14 +91,30 @@ const UserModel: UserModel = {
     *find({ payload, callback }, { call, put }) {
       const response = yield call(find, payload);
       yield put({
-        type: "save",
+        type: 'save',
         payload: response || {}
       });
     },
     *batchRemove({ payload, callback }, { call, put }) {
       const response = yield call(batchRemove, payload);
       yield put({
-        type: "save",
+        type: 'save',
+        payload: response || {}
+      });
+      if (callback) callback(response);
+    },
+    *resetPwd({ payload, callback }, { call, put }) {
+      const response = yield call(resetPwd, payload);
+      yield put({
+        type: 'save',
+        payload: response || {}
+      });
+      if (callback) callback(response);
+    },
+    *updatePwd({ payload, callback }, { call, put }) {
+      const response = yield call(updatePwd, payload);
+      yield put({
+        type: 'save',
         payload: response || {}
       });
       if (callback) callback(response);
