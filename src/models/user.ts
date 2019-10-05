@@ -16,6 +16,7 @@ export interface StateType {
 export interface Item {
   id?: string;
   account?: string;
+  avatar?: string;
   password?: string;
   name?: string;
   role?: number;
@@ -43,8 +44,10 @@ export interface UserModel {
     find: Effect;
     resetPwd: Effect;
     updatePwd: Effect;
+    fetchCurrent: Effect;
   };
   reducers: {
+    saveCurrentUser: Reducer<UserModelState>;
     save: Reducer<UserModelState>;
     changeNotifyCount: Reducer<UserModelState>;
   };
@@ -120,9 +123,22 @@ const UserModel: UserModel = {
       });
       if (callback) callback(response);
     },
+    *fetchCurrent({ payload, callback }, { call, put }) {
+      yield put({
+        type: 'saveCurrentUser',
+      });
+    },
   },
 
   reducers: {
+    saveCurrentUser(state, action) {
+      let currentUser = localStorage.getItem('currentUser')
+      currentUser = currentUser ? JSON.parse(currentUser) : {}
+      return {
+        ...state,
+        currentUser: currentUser,
+      };
+    },
     save(state, action) {
       return {
         ...state,

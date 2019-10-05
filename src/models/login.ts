@@ -59,18 +59,13 @@ const Model: ModelType = {
     },
 
     *logout(_, { put }) {
-      // const { redirect } = getPageQuery();
-      // // redirect
-      // if (window.location.pathname !== '/user/login' && !redirect) {
-      //   yield put(
-      //     routerRedux.replace({
-      //       pathname: '/user/login',
-      //       search: stringify({
-      //         redirect: window.location.href,
-      //       }),
-      //     }),
-      //   );
-      // }
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('antd-pro-authority');
+      yield put(
+        routerRedux.replace({
+          pathname: '/login',
+        }),
+      );
     }
   },
 
