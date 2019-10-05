@@ -20,13 +20,15 @@ export interface Item {
   name?: string;
   role?: number;
   phone?: string;
-  organizationId?: string;
-  organizationName?: string;
+  organization_id?: string;
+  organization_name?: string;
   disabled?: boolean;
+  notifyCount?: number,
+  unreadCount?: number,
 }
 
 export interface UserModelState {
-  user?: Item;
+  currentUser?: Item;
 }
 
 export interface UserModel {
@@ -44,7 +46,6 @@ export interface UserModel {
   };
   reducers: {
     save: Reducer<UserModelState>;
-    saveCurrentUser: Reducer<UserModelState>;
     changeNotifyCount: Reducer<UserModelState>;
   };
 }
@@ -53,7 +54,7 @@ const UserModel: UserModel = {
   namespace: 'user',
 
   state: {
-    user: {}
+    currentUser: {}
   },
 
   effects: {
@@ -118,7 +119,7 @@ const UserModel: UserModel = {
         payload: response || {}
       });
       if (callback) callback(response);
-    }
+    },
   },
 
   reducers: {
@@ -128,22 +129,16 @@ const UserModel: UserModel = {
         ...action.payload
       };
     },
-    saveCurrentUser(state, action) {
-      return {
-        ...state,
-        user: action.payload || {}
-      };
-    },
     changeNotifyCount(
       state = {
-        user: {}
+        currentUser: {}
       },
       action
     ) {
       return {
         ...state,
         currentUser: {
-          ...state.user,
+          ...state.currentUser,
           notifyCount: action.payload.totalCount,
           unreadCount: action.payload.unreadCount
         }

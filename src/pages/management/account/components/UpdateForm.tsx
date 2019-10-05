@@ -2,14 +2,9 @@ import { Button, Drawer, Form, Input, Select, Spin } from "antd";
 import React, { Component } from "react";
 
 import { FormComponentProps } from "antd/es/form";
-import { query as queryOrganization } from "@/services/organization";
-import {
-  Organization,
-  QueryParams as QueryOrganizationParams
-} from "@/models/organization";
 import { Item } from "@/models/user";
 import { ROLES } from "@/constants";
-import debounce from "lodash/debounce";
+import OrganizationSelect from '@/components/OrganizationSelect';
 
 export interface FormValsType extends Partial<Item> {}
 
@@ -25,8 +20,7 @@ const { Option } = Select;
 
 export interface UpdateFormState {
   formVals: FormValsType;
-  fetching: boolean;
-  organizations: Array<Organization>;
+  initialOrganization: any;
 }
 
 class UpdateForm extends Component<UpdateFormProps, UpdateFormState> {
@@ -41,12 +35,13 @@ class UpdateForm extends Component<UpdateFormProps, UpdateFormState> {
     super(props);
     this.state = {
       formVals: this.props.value,
-      fetching: false,
-      organizations: []
+      initialOrganization: {
+        value: this.props.value.organization_id,
+        label: this.props.value.organization_name
+      }
     };
     this.okHandle = this.okHandle.bind(this);
     this.onClose = this.onClose.bind(this);
-    this.fetchOrganization = debounce(this.fetchOrganization.bind(this), 800);
   }
 
   okHandle = () => {
@@ -63,17 +58,13 @@ class UpdateForm extends Component<UpdateFormProps, UpdateFormState> {
     this.props.handleUpdateVisible();
   };
 
-  // 查询组织信息
-  fetchOrganization(value: string) {
-    let params: QueryOrganizationParams = { name: value };
-    this.setState({ organizations: [], fetching: true });
-    queryOrganization(params).then((res: any) => {
-      this.setState({ organizations: res.data.list, fetching: false });
-    });
-  }
+  handleOrganizationChange (val: string) {
+    this.setState({
+      formVals: Object.assign({}, this.state.formVals, { organization_id: val})
+    })
+  };
 
   render() {
-    const { fetching, organizations } = this.state;
     return (
       <Drawer
         title="修改用户"
@@ -111,8 +102,8 @@ class UpdateForm extends Component<UpdateFormProps, UpdateFormState> {
               wrapperCol={{ span: 15 }}
               label="所属组织"
             >
-              {this.props.form.getFieldDecorator("organizationId", {
-                initialValue: this.state.formVals.organizationId,
+              {this.props.form.getFieldDecorator("organization_id", {
+                initialValue: this.state.formVals.organization_id,
                 rules: [
                   {
                     required: true,
@@ -120,25 +111,7 @@ class UpdateForm extends Component<UpdateFormProps, UpdateFormState> {
                   }
                 ]
               })(
-                <Select
-                  allowClear
-                  showSearch
-                  placeholder="搜索组织"
-                  notFoundContent={fetching ? <Spin size="small" /> : null}
-                  filterOption={false}
-                  onSearch={this.fetchOrganization}
-                  style={{ width: "100%" }}
-                >
-                  {organizations.length > 0 ? (
-                    organizations.map(d => (
-                      <Option value={d.id}>{d.name}</Option>
-                    ))
-                  ) : (
-                    <Option value={this.state.formVals.organizationId}>
-                      {this.state.formVals.organizationName}
-                    </Option>
-                  )}
-                </Select>
+                <OrganizationSelect initialValue={this.state.initialOrganization} onChange={() => this.handleOrganizationChange}></OrganizationSelect>
               )}
             </FormItem>
             <FormItem

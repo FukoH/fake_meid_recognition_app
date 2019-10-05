@@ -10,6 +10,9 @@ export interface StateType {
 export interface Item {
   id: string;
   organization: Organization;
+  organization_id: string,
+  organization_name: string,
+  credential_no: string,
   money: string;
   status: string;
   description: string;
@@ -28,7 +31,8 @@ export interface ListData {
 }
 
 export interface QueryParams {
-  organization_id: string; // 组织id
+  organization_id: string; // 关联组织id
+  credential_no: string; // 凭证号码
   status: string; // 状态
   currentPage: number,
   pageSize: number,
@@ -80,7 +84,7 @@ const Model: ModelType = {
         type: 'save',
         payload: response
       });
-      if (callback) callback();
+      if (callback) callback(response);
     },
     *remove({ payload, callback }, { call, put }) {
       const response = yield call(remove, payload);
@@ -88,7 +92,7 @@ const Model: ModelType = {
         type: 'save',
         payload: response
       });
-      if (callback) callback();
+      if (callback) callback(response);
     },
     *update({ payload, callback }, { call, put }) {
       const response = yield call(update, payload);
@@ -112,7 +116,7 @@ const Model: ModelType = {
     save(state, action) {
       return {
         ...state,
-        data: action.payload
+        ...action.payload
       };
     }
   }

@@ -1,14 +1,10 @@
 import {
-  Badge,
+  Divider,
   Button,
   Card,
   Col,
-  Divider,
-  Dropdown,
   Form,
-  Icon,
   Input,
-  Menu,
   Row,
   Select,
   message
@@ -22,25 +18,16 @@ import { SorterResult } from 'antd/es/table';
 import { connect } from 'dva';
 import moment from 'moment';
 import CreateForm from './components/CreateForm';
-import StandardTable, {
-  StandardTableColumnProps
-} from './components/StandardTable';
+import StandardTable, {StandardTableColumnProps} from './components/StandardTable';
 import UpdateForm, { FormValsType } from './components/UpdateForm';
 import { Pagination } from '@/models/common';
 import { Item, StateType, QueryParams } from '@/models/credential';
-
+import { CREDENTIAL_STATUS } from '@/constants'
+import OrganizationSelect from '@/components/OrganizationSelect';
 import styles from './style.less';
 
 const FormItem = Form.Item;
 const { Option } = Select;
-const getValue = (obj: { [x: string]: string[] }) =>
-  Object.keys(obj)
-    .map(key => obj[key])
-    .join(',');
-
-type IStatusMapType = 'default' | 'processing' | 'success' | 'error';
-const statusMap = ['default', 'processing', 'success', 'error'];
-const status = ['关闭', '运行中', '已上线', '异常'];
 
 interface TableListProps extends FormComponentProps {
   dispatch: Dispatch<any>;
@@ -53,7 +40,7 @@ interface TableListState {
   updateVisible: boolean;
   selectedRows: Item[];
   formValues: { [key: string]: string };
-  stepFormValues: Partial<Item>;
+  detail: Partial<Item>;
 }
 
 /* eslint react/no-multi-comp:0 */
@@ -70,58 +57,48 @@ interface TableListState {
     };
   }) => ({
     credential,
-    loading: loading.models.rule
+    loading: loading.models.credential
   })
 )
 class TableList extends Component<TableListProps, TableListState> {
+  constructor (props: TableListProps) {
+    super(props);
+  }
   state: TableListState = {
     addVisible: false,
     updateVisible: false,
     selectedRows: [],
     formValues: {},
-    stepFormValues: {}
+    detail: {},
   };
 
   columns: StandardTableColumnProps[] = [
     {
       title: '凭证号',
-      dataIndex: 'id'
+      dataIndex: 'credential_no'
     },
     {
       title: '代理商',
-      dataIndex: 'organization'
+      dataIndex: 'organization_name'
     },
     {
-      title: '金额',
-      dataIndex: 'money',
+      title: '创建时间',
+      dataIndex: 'create_time',
       sorter: true,
       render: (val: string) => (
         <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>
       )
     },
     {
+      title: '金额',
+      dataIndex: 'money',
+    },
+    {
       title: '状态',
       dataIndex: 'status',
-      filters: [
-        {
-          text: status[0],
-          value: '0'
-        },
-        {
-          text: status[1],
-          value: '1'
-        },
-        {
-          text: status[2],
-          value: '2'
-        },
-        {
-          text: status[3],
-          value: '3'
-        }
-      ],
-      render(val: IStatusMapType) {
-        return <Badge status={statusMap[val]} text={status[val]} />;
+      render(val: string) {
+        let obj = CREDENTIAL_STATUS.find(s => s.value === val)
+        return obj ? obj.label : ''
       }
     },
     {
@@ -129,10 +106,12 @@ class TableList extends Component<TableListProps, TableListState> {
       render: (text, record) => (
         <Fragment>
           <a onClick={() => this.handleUpdateVisible(true, record)}>
-            配置
+            详情
           </a>
           <Divider type='vertical' />
-          <a href=''>订阅警报</a>
+          <a onClick={() => this.handleRemove(record)}>
+            删除
+          </a>
         </Fragment>
       )
     }
@@ -153,17 +132,16 @@ class TableList extends Component<TableListProps, TableListState> {
     const { dispatch } = this.props;
     const { formValues } = this.state;
 
-    const filters = Object.keys(filtersArg).reduce((obj, key) => {
-      const newObj = { ...obj };
-      // newObj[key] = getValue(filtersArg[key]);
-      return newObj;
-    }, {});
+    // const filters = Object.keys(filtersArg).reduce((obj, key) => {
+    //   const newObj = { ...obj };
+    //   newObj[key] = getValue(filtersArg[key]);
+    //   return newObj;
+    // }, {});
 
-    const params: Partial<Item> = {
-      // currentPage: pagination.current,
-      // pageSize: pagination.pageSize,
-      ...formValues,
-      ...filters
+    const params: Partial<QueryParams> = {
+      currentPage: pagination.current,
+      pageSize: pagination.pageSize,
+      ...formValues
     };
     // if (sorter.field) {
     //   params.sorter = `${sorter.field}_${sorter.order}`;
@@ -187,29 +165,29 @@ class TableList extends Component<TableListProps, TableListState> {
     });
   };
 
-  handleMenuClick = (e: { key: string }) => {
-    const { dispatch } = this.props;
-    const { selectedRows } = this.state;
+  // handleMenuClick = (e: { key: string }) => {
+  //   const { dispatch } = this.props;
+  //   const { selectedRows } = this.state;
 
-    if (!selectedRows) return;
-    switch (e.key) {
-      case 'remove':
-        dispatch({
-          type: 'credential/remove',
-          payload: {
-            key: selectedRows.map(row => row.id)
-          },
-          callback: () => {
-            this.setState({
-              selectedRows: []
-            });
-          }
-        });
-        break;
-      default:
-        break;
-    }
-  };
+  //   if (!selectedRows) return;
+  //   switch (e.key) {
+  //     case 'remove':
+  //       dispatch({
+  //         type: 'credential/remove',
+  //         payload: {
+  //           key: selectedRows.map(row => row.id)
+  //         },
+  //         callback: () => {
+  //           this.setState({
+  //             selectedRows: []
+  //           });
+  //         }
+  //       });
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // };
 
   handleSelectRows = (rows: Item[]) => {
     this.setState({
@@ -250,21 +228,30 @@ class TableList extends Component<TableListProps, TableListState> {
   handleUpdateVisible = (flag?: boolean, record?: FormValsType) => {
     this.setState({
       updateVisible: !!flag,
-      stepFormValues: record || {}
+      detail: record || {}
     });
   };
 
-  handleAdd = (fields: { desc: any }) => {
+  handleAdd = (fields: FormValsType, callback: () => {}) => {
     const { dispatch } = this.props;
     dispatch({
       type: 'credential/add',
-      payload: {
-        desc: fields.desc
+      payload: fields,
+      callback: (res: any) => {
+        if (res.success) {
+          message.success('添加成功');
+          callback();
+          this.handleAddVisible();
+          dispatch({
+            type: 'credential/fetch',
+            payload: {}
+          });
+        } else {
+          message.error(res.errMsg);
+        }
       }
     });
 
-    message.success('添加成功');
-    this.handleAddVisible();
   };
 
   handleUpdate = (fields: FormValsType) => {
@@ -282,6 +269,25 @@ class TableList extends Component<TableListProps, TableListState> {
     this.handleUpdateVisible();
   };
 
+  handleRemove (record: FormValsType) {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'credential/remove',
+      payload: record.id,
+      callback: (res: any) => {
+        if (res.success) {
+          message.success('删除成功');
+          dispatch({
+            type: 'credential/fetch',
+            payload: {}
+          });
+        } else {
+          message.error('删除失败');
+        }
+      }
+    });
+  }
+
   renderSimpleForm() {
     const { form } = this.props;
     const { getFieldDecorator } = form;
@@ -290,16 +296,26 @@ class TableList extends Component<TableListProps, TableListState> {
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
             <FormItem label='凭证号码'>
-              {getFieldDecorator('name')(<Input placeholder='请输入' />)}
+              {getFieldDecorator('credential_no')(<Input placeholder='请输入' />)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
             <FormItem label='凭证状态'>
               {getFieldDecorator('status')(
-                <Select placeholder='请选择' style={{ width: '100%' }}>
-                  <Option value='0'>关闭</Option>
-                  <Option value='1'>运行中</Option>
+                <Select placeholder='请选择' style={{ width: '100%' }} allowClear>
+                  {CREDENTIAL_STATUS.map(s => (
+                    <Option value={s.value}>{s.label}</Option>
+                  ))}
                 </Select>
+              )}
+            </FormItem>
+          </Col>
+        </Row>
+        <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
+          <Col md={16} sm={24}>
+            <FormItem label='所属组织'>
+              {getFieldDecorator('organization_id')(
+                <OrganizationSelect></OrganizationSelect>
               )}
             </FormItem>
           </Col>
@@ -323,19 +339,18 @@ class TableList extends Component<TableListProps, TableListState> {
       credential: { data },
       loading
     } = this.props;
-
     const {
       selectedRows,
       addVisible,
       updateVisible,
-      stepFormValues
+      detail
     } = this.state;
-    const menu = (
-      <Menu onClick={this.handleMenuClick} selectedKeys={[]}>
-        <Menu.Item key='remove'>删除</Menu.Item>
-        <Menu.Item key='approval'>批量审批</Menu.Item>
-      </Menu>
-    );
+    // const menu = (
+    //   <Menu onClick={this.handleMenuClick} selectedKeys={[]}>
+    //     <Menu.Item key='remove'>删除</Menu.Item>
+    //     <Menu.Item key='approval'>批量审批</Menu.Item>
+    //   </Menu>
+    // );
 
     const parentMethods = {
       handleAdd: this.handleAdd,
@@ -358,16 +373,16 @@ class TableList extends Component<TableListProps, TableListState> {
               >
                 新建
               </Button>
-              {selectedRows.length > 0 && (
+              {/* {selectedRows.length > 0 && (
                 <span>
-                  <Button>批量操作</Button>
+                  <Button>批量删除</Button>
                   <Dropdown overlay={menu}>
                     <Button>
                       更多操作 <Icon type='down' />
                     </Button>
                   </Dropdown>
                 </span>
-              )}
+              )} */}
             </div>
             <StandardTable
               selectedRows={selectedRows}
@@ -376,15 +391,16 @@ class TableList extends Component<TableListProps, TableListState> {
               columns={this.columns}
               onSelectRow={this.handleSelectRows}
               onChange={this.handleStandardTableChange}
+              rowKey='id'
             />
           </div>
         </Card>
-        <CreateForm {...parentMethods} addVisible={addVisible} />
-        {stepFormValues && Object.keys(stepFormValues).length ? (
+        <CreateForm loading={loading} {...parentMethods} addVisible={addVisible} />
+        {detail && Object.keys(detail).length ? (
           <UpdateForm
             {...updateMethods}
             updateVisible={updateVisible}
-            values={stepFormValues}
+            values={detail}
           />
         ) : null}
       </PageHeaderWrapper>

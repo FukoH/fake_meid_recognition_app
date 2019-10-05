@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { FormComponentProps } from 'antd/es/form';
 import classNames from 'classnames';
 import LoginContext, { LoginContextProps } from './LoginContext';
-import LoginItem, { LoginItemProps } from './LoginItem';
+import LoginItem, { LoginItemProps, LoginItemType } from './LoginItem';
 
 import LoginSubmit from './LoginSubmit';
 import LoginTab from './LoginTab';
@@ -11,7 +11,6 @@ import styles from './index.less';
 
 export interface LoginProps {
   defaultActiveKey?: string;
-  onTabChange?: (key: string) => void;
   style?: React.CSSProperties;
   onSubmit?: (error: any, values: any) => void;
   className?: string;
@@ -34,10 +33,6 @@ class Login extends Component<LoginProps, LoginState> {
 
   public static Password: React.FunctionComponent<LoginItemProps>;
 
-  public static Mobile: React.FunctionComponent<LoginItemProps>;
-
-  public static Captcha: React.FunctionComponent<LoginItemProps>;
-
   static defaultProps = {
     className: '',
     defaultActiveKey: '',
@@ -53,20 +48,6 @@ class Login extends Component<LoginProps, LoginState> {
       active: {},
     };
   }
-
-  onSwitch = (type: string) => {
-    this.setState(
-      {
-        type,
-      },
-      () => {
-        const { onTabChange } = this.props;
-        if (onTabChange) {
-          onTabChange(type);
-        }
-      },
-    );
-  };
 
   getContext: () => LoginContextProps = () => {
     const { form } = this.props;
@@ -141,7 +122,6 @@ class Login extends Component<LoginProps, LoginState> {
                   animated={false}
                   className={styles.tabs}
                   activeKey={type}
-                  onChange={this.onSwitch}
                 >
                   {TabChildren}
                 </Tabs>

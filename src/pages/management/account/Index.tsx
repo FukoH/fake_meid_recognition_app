@@ -89,7 +89,7 @@ class TableList extends Component<TableListProps, TableListState> {
     },
     {
       title: '组织',
-      dataIndex: 'organizationName'
+      dataIndex: 'organization_name'
     },
     {
       title: '角色',
@@ -257,7 +257,7 @@ class TableList extends Component<TableListProps, TableListState> {
     });
   };
 
-  handleAdd = (fields: { desc: any }) => {
+  handleAdd = (fields: FormValsType) => {
     const { dispatch } = this.props;
     dispatch({
       type: 'user/add',

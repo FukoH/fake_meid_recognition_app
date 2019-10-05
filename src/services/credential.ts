@@ -1,10 +1,9 @@
 import request from '@/utils/request';
 import { QueryParams, Item } from '@/models/credential';
+import { toQueryString } from '@/utils/utils';
 
 export async function query(params: QueryParams) {
-  return request('/api/credential', {
-    params
-  });
+  return request(`/api/credential${toQueryString(params)}`);
 }
 
 export async function find(id: string) {

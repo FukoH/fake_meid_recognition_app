@@ -129,7 +129,7 @@ class StandardTable extends Component<
 
     return (
       <div className={styles.standardTable}>
-        <div className={styles.tableAlert}>
+        {/* <div className={styles.tableAlert}>
           <Alert
             message={
               <Fragment>
@@ -155,7 +155,7 @@ class StandardTable extends Component<
             type='info'
             showIcon
           />
-        </div>
+        </div> */}
         <Table
           rowKey={rowKey || 'key'}
           rowSelection={rowSelection}

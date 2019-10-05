@@ -4,10 +4,16 @@ import { parse, stringify } from 'qs';
 import { EffectsCommandMap } from 'dva';
 import { routerRedux } from 'dva/router';
 import { login } from '@/services/login';
+import { setAuthority } from '@/utils/authority';
 
 export interface FormData {
   userName: string;
   password: string;
+}
+export interface StateType {
+  status?: 'ok' | 'error';
+  type?: string;
+  currentAuthority?: 'user' | 'guest' | 'admin';
 }
 
 export function getPageQuery(): {
@@ -15,11 +21,6 @@ export function getPageQuery(): {
 } {
   return parse(window.location.href.split('?')[1]);
 }
-
-// export function setAuthority(authority: string | string[]) {
-//   const proAuthority = typeof authority === 'string' ? [authority] : authority;
-//   return localStorage.setItem('antd-pro-authority', JSON.stringify(proAuthority));
-// }
 
 export type Effect = (
   action: AnyAction,
@@ -46,29 +47,15 @@ const Model: ModelType = {
   effects: {
     *login({ payload }, { call, put }) {
       const response = yield call(login, payload);
-      // yield put({
-      //   type: 'changeLoginStatus',
-      //   payload: response,
-      // });
-      // // Login successfully
-      // if (response.status === 'ok') {
-      //   const urlParams = new URL(window.location.href);
-      //   const params = getPageQuery();
-      //   let { redirect } = params as { redirect: string };
-      //   if (redirect) {
-      //     const redirectUrlParams = new URL(redirect);
-      //     if (redirectUrlParams.origin === urlParams.origin) {
-      //       redirect = redirect.substr(urlParams.origin.length);
-      //       if (redirect.match(/^\/.*#/)) {
-      //         redirect = redirect.substr(redirect.indexOf('#') + 1);
-      //       }
-      //     } else {
-      //       window.location.href = redirect;
-      //       return;
-      //     }
-      //   }
-      //   yield put(routerRedux.replace(redirect || '/'));
-      // }
+      yield put({
+        type: 'changeLoginStatus',
+        payload: response,
+      });
+      // 登陆成功
+      if (response.success) {
+        // 跳转路由
+        yield put(routerRedux.replace('/'));
+      }
     },
 
     *logout(_, { put }) {
@@ -89,11 +76,13 @@ const Model: ModelType = {
 
   reducers: {
     changeLoginStatus(state, { payload }) {
-      // setAuthority(payload.currentAuthority);
+      // 根据角色权限设置，1：管理员，2：经销商
+      setAuthority(payload.data.role === "1" ? 'admin' : 'user');
+      // 存储当前用户数据信息
+      localStorage.setItem('currentUser', JSON.stringify(payload.data));
       return {
         ...state,
-        status: payload.status,
-        type: payload.type
+        status: payload.success ? 'ok' : 'error',
       };
     }
   }

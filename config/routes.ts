@@ -15,65 +15,69 @@ export default [
   },
   {
     path: '/',
-    component: '../layouts/BasicLayout',
-    Routes: ['src/pages/Authorized'],
-    authority: ['admin', 'user'],
+    component: '../layouts/SecurityLayout',
     routes: [
       {
         path: '/',
-        redirect: '/dashboard/analysis'
-      },
-      {
-        path: '/dashboard',
-        name: 'dashboard',
-        icon: 'dashboard',
+        component: '../layouts/BasicLayout',
         routes: [
           {
-            path: '/dashboard/analysis',
-            name: 'analysis',
-            component: './dashboard/analysis/Index'
+            path: '/',
+            redirect: '/dashboard/analysis'
           },
           {
-            path: '/dashboard/list',
-            name: 'list',
-            component: './dashboard/list/Index'
-          }
-        ]
-      },
-      {
-        path: '/management',
-        name: 'management',
-        icon: 'database',
-        routes: [
-          {
-            path: '/management/credential',
-            name: 'credential',
-            component: './management/credential/Index'
+            path: '/dashboard',
+            name: 'dashboard',
+            icon: 'dashboard',
+            routes: [
+              {
+                path: '/dashboard/analysis',
+                name: 'analysis',
+                component: './dashboard/analysis/Index',
+                authority: ['admin', 'user'],
+              },
+              {
+                path: '/dashboard/list',
+                name: 'list',
+                component: './dashboard/list/Index'
+              }
+            ]
           },
           {
-            path: '/management/account',
-            name: 'account',
-            component: './management/account/Index'
-          }
-        ]
-      },
-      {
-        path: '/setting',
-        name: 'setting',
-        icon: 'setting',
-        routes: [
+            path: '/management',
+            name: 'management',
+            icon: 'database',
+            routes: [
+              {
+                path: '/management/credential',
+                name: 'credential',
+                component: './management/credential/Index'
+              },
+              {
+                path: '/management/account',
+                name: 'account',
+                component: './management/account/Index'
+              }
+            ]
+          },
           {
-            path: '/setting/platform',
-            name: 'platform',
-            component: './setting/platform/Index'
+            path: '/setting',
+            name: 'setting',
+            icon: 'setting',
+            routes: [
+              {
+                path: '/setting/platform',
+                name: 'platform',
+                component: './setting/platform/Index'
+              }
+            ]
+          },
+          {
+            component: './404'
           }
         ]
       },
-      {
-        component: './404'
-      }
-    ]
-  },
+    ]},
   {
     component: './404'
   }
