@@ -54,7 +54,7 @@ export default {
   menu: {
     locale: true,
   },
-  title: '串号管理平台',
+  title: '北京电信虚假串码识别管理系统',
   pwa: false,
   iconfontUrl: '',
 } as DefaultSettings;

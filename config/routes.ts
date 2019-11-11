@@ -26,6 +26,16 @@ export default [
             redirect: '/dashboard/analysis'
           },
           {
+            path: '/distinguish',
+            name: 'distinguish',
+            icon: 'eye',
+            routes: [{
+              path: '/distinguish/list',
+              name: 'list',
+              component: './distinguish/list/Index'
+            }]
+          },
+          {
             path: '/dashboard',
             name: 'dashboard',
             icon: 'dashboard',
@@ -52,12 +62,11 @@ export default [
                 path: '/management/credential',
                 name: 'credential',
                 component: './management/credential/Index'
+              }, {
+                path: '/management/file',
+                name: 'file',
+                component: './management/file/Index'
               },
-              {
-                path: '/management/account',
-                name: 'account',
-                component: './management/account/Index'
-              }
             ]
           },
           {
@@ -66,10 +75,15 @@ export default [
             icon: 'setting',
             routes: [
               {
+                path: '/setting/account',
+                name: 'account',
+                component: './setting/account/Index'
+              },
+              {
                 path: '/setting/platform',
                 name: 'platform',
                 component: './setting/platform/Index'
-              }
+              },
             ]
           },
           {

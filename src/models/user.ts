@@ -132,8 +132,8 @@ const UserModel: UserModel = {
 
   reducers: {
     saveCurrentUser(state, action) {
-      let currentUser = localStorage.getItem('currentUser')
-      currentUser = currentUser ? JSON.parse(currentUser) : {}
+      let currentUserStr = localStorage.getItem('currentUser')
+      let currentUser = currentUserStr ? JSON.parse(currentUserStr) : {}
       return {
         ...state,
         currentUser: currentUser,
